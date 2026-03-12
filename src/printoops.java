@@ -1,59 +1,89 @@
 public class printoops {
 
-    // Method to return pattern for letter O
-    public static String[] getOPattern() {
-        return new String[] {
-            " ***** ",
-            "*     *",
-            "*     *",
-            "*     *",
-            "*     *",
-            "*     *",
-            " ***** "
-        };
+    public static class CharacterPatternMap {
+
+        private char character;
+        private String[] pattern;
+
+        public CharacterPatternMap(char character, String[] pattern) {
+            this.character = character;
+            this.pattern = pattern;
+        }
+
+        public char getCharacter() {
+            return character;
+        }
+
+        public String[] getPattern() {
+            return pattern;
+        }
     }
 
-    // Method to return pattern for letter P
-    public static String[] getPPattern() {
-        return new String[] {
-            " ******",
-            "*     *",
-            "*     *",
-            " ******",
-            "*      ",
-            "*      ",
-            "*      "
-        };
-    }
+    public static CharacterPatternMap getCharacterPattern(
+            char ch, CharacterPatternMap[] patterns) {
 
-    // Method to return pattern for letter S
-    public static String[] getSPattern() {
-        return new String[] {
-            " ***** ",
-            "*     *",
-            "*      ",
-            " ***** ",
-            "      *",
-            "*     *",
-            " ***** "
-        };
+        for (CharacterPatternMap pattern : patterns) {
+            if (pattern.getCharacter() == ch) {
+                return pattern;
+            }
+        }
+        return null;
     }
 
     public static void main(String[] args) {
 
-        String[] o1 = getOPattern();
-        String[] o2 = getOPattern();
-        String[] p  = getPPattern();
-        String[] s  = getSPattern();
+        String[] oPattern = {
+                " ***** ",
+                "*     *",
+                "*     *",
+                "*     *",
+                "*     *",
+                "*     *",
+                " ***** "
+        };
 
-        String[] banner = new String[7];
+        String[] pPattern = {
+                " ***** ",
+                "*     *",
+                "*     *",
+                " ***** ",
+                "*      ",
+                "*      ",
+                "*      "
+        };
 
-        for (int i = 0; i < 7; i++) {
-            banner[i] = String.join("  ", o1[i], o2[i], p[i], s[i]);
-        }
+        String[] sPattern = {
+                " ***** ",
+                "*      ",
+                "*      ",
+                " ***** ",
+                "      *",
+                "      *",
+                " ***** "
+        };
 
-        // Enhanced for loop to print
-        for (String line : banner) {
+        CharacterPatternMap[] patterns = {
+                new CharacterPatternMap('O', oPattern),
+                new CharacterPatternMap('P', pPattern),
+                new CharacterPatternMap('S', sPattern)
+        };
+
+        String word = "OOPS";
+
+        for (int row = 0; row < 7; row++) {
+
+            StringBuilder line = new StringBuilder();
+
+            for (int i = 0; i < word.length(); i++) {
+
+                CharacterPatternMap pattern =
+                        getCharacterPattern(word.charAt(i), patterns);
+
+                if (pattern != null) {
+                    line.append(pattern.getPattern()[row]).append("   ");
+                }
+            }
+
             System.out.println(line);
         }
     }
