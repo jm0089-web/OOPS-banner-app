@@ -1,38 +1,14 @@
-public class printoops {
+import java.util.HashMap;
+import java.util.Map;
 
-    public static class CharacterPatternMap {
+public class PrintOOPS {
 
-        private char character;
-        private String[] pattern;
+    // Method to build character patterns
+    public static Map<Character, String[]> buildCharacterPatterns() {
 
-        public CharacterPatternMap(char character, String[] pattern) {
-            this.character = character;
-            this.pattern = pattern;
-        }
+        Map<Character, String[]> patternMap = new HashMap<>();
 
-        public char getCharacter() {
-            return character;
-        }
-
-        public String[] getPattern() {
-            return pattern;
-        }
-    }
-
-    public static CharacterPatternMap getCharacterPattern(
-            char ch, CharacterPatternMap[] patterns) {
-
-        for (CharacterPatternMap pattern : patterns) {
-            if (pattern.getCharacter() == ch) {
-                return pattern;
-            }
-        }
-        return null;
-    }
-
-    public static void main(String[] args) {
-
-        String[] oPattern = {
+        patternMap.put('O', new String[]{
                 " ***** ",
                 "*     *",
                 "*     *",
@@ -40,9 +16,9 @@ public class printoops {
                 "*     *",
                 "*     *",
                 " ***** "
-        };
+        });
 
-        String[] pPattern = {
+        patternMap.put('P', new String[]{
                 " ***** ",
                 "*     *",
                 "*     *",
@@ -50,9 +26,9 @@ public class printoops {
                 "*      ",
                 "*      ",
                 "*      "
-        };
+        });
 
-        String[] sPattern = {
+        patternMap.put('S', new String[]{
                 " ***** ",
                 "*      ",
                 "*      ",
@@ -60,31 +36,41 @@ public class printoops {
                 "      *",
                 "      *",
                 " ***** "
-        };
+        });
 
-        CharacterPatternMap[] patterns = {
-                new CharacterPatternMap('O', oPattern),
-                new CharacterPatternMap('P', pPattern),
-                new CharacterPatternMap('S', sPattern)
-        };
+        return patternMap;
+    }
 
-        String word = "OOPS";
+    // Method to render banner
+    public static void renderBanner(String message,
+                                    Map<Character, String[]> patternMap) {
+
+        message = message.toUpperCase(); // Handles lowercase input
 
         for (int row = 0; row < 7; row++) {
 
             StringBuilder line = new StringBuilder();
 
-            for (int i = 0; i < word.length(); i++) {
+            for (int i = 0; i < message.length(); i++) {
 
-                CharacterPatternMap pattern =
-                        getCharacterPattern(word.charAt(i), patterns);
+                char ch = message.charAt(i);
+                String[] pattern = patternMap.get(ch); // Single lookup
 
                 if (pattern != null) {
-                    line.append(pattern.getPattern()[row]).append("   ");
+                    line.append(pattern[row]).append("   ");
                 }
             }
 
             System.out.println(line);
         }
+    }
+
+    public static void main(String[] args) {
+
+        Map<Character, String[]> patternMap = buildCharacterPatterns();
+
+        String word = "OOPS";
+
+        renderBanner(word, patternMap);
     }
 }
